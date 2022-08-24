@@ -3,34 +3,51 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import contactsSelectors from "redux/contacts/contacts-selectors";
 import { contactsOperations } from "redux/contacts";
+import { authSelectors } from "redux/auth";
+import styled from "styled-components";
 
+const Container = styled.div`
+    min-height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Title = styled.h1`
+    font-weight: 500;
+    font-size: 48px;
+    text-align: center;
+`;
 
 const ContactsView = () => {
+    const isLoggedIn = useSelector(authSelectors.getIsLoggedIn)
     const contacts = useSelector(contactsSelectors.getContacts);
     const status = useSelector(contactsSelectors.getStatus);
     const dispatch = useDispatch();
     
     useEffect(() => {
         dispatch(contactsOperations.fetchContacts())
-    },[dispatch])
+    },[dispatch]);
 
-    if(status === "rejected") {
+    if(status === "rejected" || !isLoggedIn) {
         return (
-            <h1>You have to be logged in!</h1>
+            <Container>
+                <Title>You have to be logged in to see the contacts👨🏻‍💻!</Title>
+            </Container>
         );
     };
 
     if(status === "pending") {
         return (
-            <h1>Loading...</h1>
+            <Container>
+                <Title>Loading...</Title>
+            </Container>
         );
     };
 
     if(status === "fulfilled") {
         return (
-            <>
-                <ContactList contacts={contacts}/>
-            </>
+            <ContactList contacts={contacts}/>
         );
     };
    

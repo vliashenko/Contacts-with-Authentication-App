@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { authOperations } from 'redux/auth';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {authSelectors} from 'redux/auth';
+import { useEffect } from 'react';
 
 const styles = {
     form: {
@@ -14,10 +18,15 @@ const styles = {
   };
 
 const LoginView = () => {
-
+    const isLoggedIn = useSelector(authSelectors.getIsLoggedIn)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        isLoggedIn && navigate("/")
+    }, [isLoggedIn, navigate])
 
     const handleChange = ({ target: {name, value} }) => {
         switch (name) {
