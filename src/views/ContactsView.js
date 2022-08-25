@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import contactsSelectors from "redux/contacts/contacts-selectors";
 import { contactsOperations } from "redux/contacts";
-import { authSelectors } from "redux/auth";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -20,7 +19,6 @@ const Title = styled.h1`
 `;
 
 const ContactsView = () => {
-    const isLoggedIn = useSelector(authSelectors.getIsLoggedIn)
     const contacts = useSelector(contactsSelectors.getContacts);
     const status = useSelector(contactsSelectors.getStatus);
     const dispatch = useDispatch();
@@ -29,10 +27,10 @@ const ContactsView = () => {
         dispatch(contactsOperations.fetchContacts())
     },[dispatch]);
 
-    if(status === "rejected" || !isLoggedIn) {
+    if(status === "rejected") {
         return (
             <Container>
-                <Title>You have to be logged in to see the contacts👨🏻‍💻!</Title>
+                <Title>Something went wrong👨🏻‍💻!</Title>
             </Container>
         );
     };

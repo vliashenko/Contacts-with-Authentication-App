@@ -15,11 +15,6 @@ const setError = (state, action) => {
 const contactsSlice = createSlice({
     name: "contacts",
     initialState,
-    reducers: {
-        removeContact(state,action) {
-            state.todos = state.todos.filter(todo => todo.id !== action.payload)
-        },
-    },
     extraReducers: {
         [contactOperations.fetchContacts.fulfilled] (state, action) {
            state.contacts = action.payload 
@@ -35,5 +30,4 @@ const contactsSlice = createSlice({
     }
 })
 
-export const { removeContact } = contactsSlice.actions;
 export default contactsSlice.reducer;
